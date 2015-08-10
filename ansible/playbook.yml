@@ -1,0 +1,4 @@
+- hosts: all
+  vars:
+    color: brown
+    gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
