@@ -11,3 +11,4 @@ Feature: Check deployment went successfully
 
         When data storage is avaiable
         Then it contains NOAA GAC satellite data
+        Then the AVHRR data can be read using pypps_reader

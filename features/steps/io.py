@@ -1,7 +1,7 @@
 from behave import *
 import os
 import yaml
-
+# import pypps_reader
 
 @given(u'the project deployed using Ansible')
 def step_impl(context):
@@ -40,6 +40,13 @@ def step_impl(context):
     cloudtypes = filter(lambda x: 'cloudtype' in x, file_list)
     avhrr = filter(lambda x: 'avhrr' in x, file_list)
     cloudmask = filter(lambda x: 'cloudmask' in x, file_list)
+    
     assert all([angles, cloudmask, cloudtypes, avhrr])
+
+@then(u'the AVHRR data can be read using pypps_reader')
+def step_impl(context):
+    avhrr_data = None
+    assert avhrr_data is not None
+
 
 
