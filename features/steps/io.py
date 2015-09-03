@@ -13,7 +13,7 @@ def step_impl(context):
 @then(u'there should be a playbook sitting in the Ansible directory')
 def step_impl(context):
     # Check there is a readable playbook in the Ansible directory
-    assert context.playbook[0]['vars']['gac_dir']
+    assert context.playbook[0]['vars']['local_gac_dir']
 
 
 @when(u'data storage is avaiable')
@@ -30,7 +30,7 @@ def step_impl(context):
     date = "20080710"
     data_dir = os.path.join(context.data_dir, year, date)
     assert os.path.exists(data_dir)
-    
+
     # list data directory contents and check whether it contains all
     # necessary information
     file_list = os.listdir(data_dir)
@@ -40,13 +40,10 @@ def step_impl(context):
     cloudtypes = filter(lambda x: 'cloudtype' in x, file_list)
     avhrr = filter(lambda x: 'avhrr' in x, file_list)
     cloudmask = filter(lambda x: 'cloudmask' in x, file_list)
-    
+
     assert all([angles, cloudmask, cloudtypes, avhrr])
 
 @then(u'the AVHRR data can be read using pypps_reader')
 def step_impl(context):
     avhrr_data = None
     assert avhrr_data is not None
-
-
-
