@@ -1,9 +1,10 @@
 ---
-- hosts: all
+- hosts: vagrant
   gather_facts: no
   vars:
     color: brown
     gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
+    local_gac_dir: ~/data
     # project_dir: /disk1/workspace/ice-arc
     project_dir: ~/ice-arc
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
@@ -18,6 +19,9 @@
       - git
       - python-dev
       - libhdf5-serial-dev
+      - sshfs
+    tags:
+      - apt
 
   - name: Create project directory
     file: path={{ project_dir }} state=directory
@@ -29,8 +33,32 @@
       - behave
       - PyYAML
 
-  - name: Install behave
-    pip: name=behave virtualenv={{ venv }}
-
   - name: Install pypps_reader
-    pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader' virtualenv={{ venv }}
+    pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader'
+         virtualenv={{ venv }}
+
+  - name: Get ICE ARC code from git
+    git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
+         dest=~/icearc-avhrr-sic
+         accept_hostkey=yes
+         force=yes key_file="{{ lookup('file', '/home/mikhaili/.ssh/metno.pub') }}"
+         version=behave-deploy
+    tags:
+      - git
+
+  - name: Run behaviour tests
+    shell: "{{ venv }}/bin/behave"
+    args:
+      chdir: ~/icearc-avhrr-sic
+    tags:
+      - tests
+
+  - name: Make a mount point
+    file: path={{ local_gac_dir }} state=directory
+    tags:
+      - ssh
+
+  - name: Mount data directory
+    shell: sshfs "mikhaili@10.0.2.2:{{ gac_dir }}" {{ local_gac_dir }}
+    tags:
+      - ssh
