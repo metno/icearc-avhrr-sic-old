@@ -8,5 +8,3 @@ def before_all(context):
     with open(context.playbook_path) as playbook:
         playbook = playbook.read()
     context.playbook = yaml.safe_load(playbook)
-    import ipdb
-    ipdb.set_trace()
