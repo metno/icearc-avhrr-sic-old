@@ -1,7 +1,7 @@
 from behave import *
 import os
 import yaml
-# import pypps_reader
+import pypps_reader
 
 @given(u'the project deployed using Ansible')
 def step_impl(context):
