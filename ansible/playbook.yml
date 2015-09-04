@@ -1,8 +1,8 @@
 ---
 - hosts: vagrant
   gather_facts: no
+  user: vagrant
   vars:
-    user: vagrant
     color: brown
     gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
     local_gac_dir: "/home/{{ user }}/data"
