@@ -20,7 +20,7 @@ def step_impl(context):
 def step_impl(context):
     assert context.ansible_basedir
     assert context.playbook
-    context.data_dir = context.playbook[0]['vars']['gac_dir']
+    context.data_dir = context.playbook[0]['vars']['local_gac_dir']
     assert os.path.exists(context.data_dir)
 
 
