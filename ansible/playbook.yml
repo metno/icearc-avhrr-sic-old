@@ -43,7 +43,6 @@
          dest=~/icearc-avhrr-sic
          accept_hostkey=yes
          force=yes key_file="{{ lookup('file', '/home/mikhaili/.ssh/metno.pub') }}"
-         version=behave-deploy
     tags:
       - git
 
