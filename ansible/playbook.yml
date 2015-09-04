@@ -2,9 +2,10 @@
 - hosts: vagrant
   gather_facts: no
   vars:
+    user: vagrant
     color: brown
     gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
-    local_gac_dir: ~/data
+    local_gac_dir: "/home/{{ user }}/data"
     # project_dir: /disk1/workspace/ice-arc
     project_dir: ~/ice-arc
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
