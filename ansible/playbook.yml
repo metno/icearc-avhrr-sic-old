@@ -2,16 +2,16 @@
 - hosts: vagrant
   gather_facts: no
   user: vagrant
+  sudo_user: root
   vars:
+    user: vagrant
     color: brown
     gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
     local_gac_dir: /disk1/gac-data
     # project_dir: /disk1/workspace/ice-arc
     project_dir: ~/ice-arc
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
-
   tasks:
-
   - name: Install virtualenv
     apt: name={{ item }} state=present update_cache=yes
     sudo: true
@@ -47,6 +47,19 @@
     tags:
       - git
 
+  - name: Make a mount point
+    file: path={{ local_gac_dir }} state=directory owner={{ user}}
+    sudo: true
+    ignore_errors: true
+    tags:
+      - ssh
+
+  - name: Mount data directory
+    shell: sshfs "mikhaili@10.0.2.2:{{ gac_dir }}" {{ local_gac_dir }} -o reconnect
+    ignore_errors: true
+    tags:
+      - ssh
+
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave"
     args:
@@ -54,13 +67,3 @@
     tags:
       - tests
 
-  - name: Make a mount point
-    file: path={{ local_gac_dir }} state=directory
-    sudo: yes
-    tags:
-      - ssh
-
-  - name: Mount data directory
-    shell: sshfs "mikhaili@10.0.2.2:{{ gac_dir }}" {{ local_gac_dir }}
-    tags:
-      - ssh
