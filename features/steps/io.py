@@ -1,7 +1,8 @@
 from behave import *
 import os
 import yaml
-import pypps_reader
+from pypps_reader import NwcSafPpsData
+import numpy
 
 @given(u'the project deployed using Ansible')
 def step_impl(context):
@@ -41,9 +42,14 @@ def step_impl(context):
     avhrr = filter(lambda x: 'avhrr' in x, file_list)
     cloudmask = filter(lambda x: 'cloudmask' in x, file_list)
 
+    context.avhrr_file_list = avhrr
+
     assert all([angles, cloudmask, cloudtypes, avhrr])
+
 
 @then(u'the AVHRR data can be read using pypps_reader')
 def step_impl(context):
-    avhrr_data = None
-    assert avhrr_data is not None
+
+    avhrr_data_file = context.avhrr_file_list[0]
+    avhrr_data_ch1 = NwcSafPpsData(avhrr_data_file).image1.data
+    assert isinstance(avhrr_data_ch1, numpy.ndarray)
