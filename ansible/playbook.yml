@@ -5,7 +5,7 @@
   vars:
     color: brown
     gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
-    local_gac_dir: "/home/{{ user }}/data"
+    local_gac_dir: /disk1/gac-data
     # project_dir: /disk1/workspace/ice-arc
     project_dir: ~/ice-arc
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
@@ -56,6 +56,7 @@
 
   - name: Make a mount point
     file: path={{ local_gac_dir }} state=directory
+    sudo: yes
     tags:
       - ssh
 
