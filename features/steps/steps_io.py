@@ -31,6 +31,7 @@ def step_impl(context):
     date = "20080710"
     data_dir = os.path.join(context.data_dir, year, date)
     assert os.path.exists(data_dir)
+    context.data_dir = data_dir
 
     # list data directory contents and check whether it contains all
     # necessary information
@@ -50,6 +51,6 @@ def step_impl(context):
 @then(u'the AVHRR data can be read using pypps_reader')
 def step_impl(context):
 
-    avhrr_data_file = context.avhrr_file_list[0]
+    avhrr_data_file = os.path.join(context.data_dir, context.avhrr_file_list[0])
     avhrr_data_ch1 = NwcSafPpsData(avhrr_data_file).image1.data
     assert isinstance(avhrr_data_ch1, numpy.ndarray)
