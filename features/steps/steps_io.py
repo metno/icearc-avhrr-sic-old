@@ -54,4 +54,3 @@ def step_impl(context):
     avhrr_data_file = os.path.join(context.data_dir, context.avhrr_file_list[0])
     avhrr_data_ch1 = NwcSafPpsData(avhrr_data_file).image1.data
     assert isinstance(avhrr_data_ch1, numpy.ndarray)
-    assert False
