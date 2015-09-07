@@ -11,6 +11,7 @@
     # project_dir: /disk1/workspace/ice-arc
     project_dir: ~/ice-arc
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
+
   tasks:
   - name: Install virtualenv
     apt: name={{ item }} state=present update_cache=yes
