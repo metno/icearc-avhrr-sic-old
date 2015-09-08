@@ -61,7 +61,7 @@ def step_impl(context):
     sic_data_path = context.sic_data_path
     sic_file_list = os.listdir(sic_data_path)
     sic_data = netCDF4.Dataset(os.path.join(sic_data_path, sic_file_list[0]))
-    assert sic_data.variables['seaice_conc_cdr'][:] is numpy.ndarray
+    assert isinstance(sic_data.variables['seaice_conc_cdr'][:], numpy.ndarray)
 
 @given(u'the playbook contains SIC data path and is not empty')
 def step_impl(context):
