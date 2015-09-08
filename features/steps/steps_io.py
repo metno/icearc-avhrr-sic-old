@@ -10,7 +10,6 @@ def step_impl(context):
     # check there is an Ansible directory
     assert context.ansible_basedir
     assert context.playbook_path
-    assert context.sic_data_path
 
 
 @then(u'there should be a playbook sitting in the Ansible directory')
