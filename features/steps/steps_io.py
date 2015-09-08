@@ -3,12 +3,14 @@ import os
 import yaml
 from pypps_reader import NwcSafPpsData
 import numpy
+import netCDF4
 
 @given(u'the project deployed using Ansible')
 def step_impl(context):
     # check there is an Ansible directory
     assert context.ansible_basedir
     assert context.playbook_path
+    assert context.sic_data_path
 
 
 @then(u'there should be a playbook sitting in the Ansible directory')
@@ -54,3 +56,15 @@ def step_impl(context):
     avhrr_data_file = os.path.join(context.data_dir, context.avhrr_file_list[0])
     avhrr_data_ch1 = NwcSafPpsData(avhrr_data_file).image1.data
     assert isinstance(avhrr_data_ch1, numpy.ndarray)
+
+@then(u'the NSIDC data can be read')
+def step_impl(context):
+    sic_data_path = context.sic_data_path
+    sic_file_list = os.listdir(sic_data_path)
+    sic_data = netCDF4.Dataset(os.path.join(sic_data_path, sic_file_list[0]))
+
+@given(u'the playbook contains SIC data path and is not empty')
+def step_impl(context):
+    context.sic_data_path = context.playbook[0]['vars']['local_sic_dir']
+    assert os.path.exists(context.sic_data_path)
+    assert any(os.listdir(context.sic_data_path))
