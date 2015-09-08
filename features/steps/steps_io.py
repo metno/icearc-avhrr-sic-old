@@ -61,11 +61,7 @@ def step_impl(context):
 def step_impl(context):
     sic_data_path = context.sic_data_path
     sic_file_list = os.listdir(sic_data_path)
-<<<<<<< HEAD
     sic_data = netCDF4.Dataset(os.path.join(sic_data_path, sic_file_list[0]))
-=======
-    sic_data = netCDF4.Dataset(sic_file_list[0])
->>>>>>> 441e051c4ae87ad15a4829f7038d4471f14dd74f
 
 @given(u'the playbook contains SIC data path and is not empty')
 def step_impl(context):
