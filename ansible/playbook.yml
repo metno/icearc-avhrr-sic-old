@@ -15,7 +15,7 @@
     venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
 
   tasks:
-  - name: Install virtualenv
+  - name: Install system dependencies 
     apt: name={{ item }} state=present update_cache=yes
     sudo: true
     sudo_user: root
@@ -23,6 +23,7 @@
       - git
       - python-dev
       - libhdf5-serial-dev
+      - libnetcdf-dev
       - sshfs
     tags:
       - apt
@@ -51,7 +52,10 @@
       - git
 
   - name: Make a mount point
-    file: path={{ local_gac_dir }} state=directory owner={{ user}}
+    file: path={{ item }} state=directory owner={{ user}}
+    with_items:
+      - "{{ local_gac_dir }}"
+      - "{{ local_sic_dir }}"
     sudo: true
     ignore_errors: true
     tags:
@@ -63,8 +67,8 @@
     tags:
       - ssh
 
-  - name: Mount data directory
-    shell: sshfs "mikhaili@{{ gac_data_host }}:{{ remote_sic_dir }}" {{ local_sic_dir }} -o reconnect
+  - name: Mount SIC data directory
+    shell: sshfs "mikhaili@{{ gac_data_host }}:{{ remote_sic_dir }}" {{ local_sic_dir }} -o reconnect,nonempty
     ignore_errors: true
     tags:
       - ssh
