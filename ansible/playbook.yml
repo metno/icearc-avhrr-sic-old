@@ -12,10 +12,11 @@
     local_sic_dir: /disk1/sic-data
     # project_dir: /disk1/workspace/ice-arc
     project_dir: "/home/{{ dp_user }}/ice-arc"
-    venv: "{{ project_dir }}/codeshop/icearc-avhrr-sic/venv-vagrant"
+    venv: "{{ project_dir }}/codeshop/venv"
+    test_date: "2008-07-01"
 
   tasks:
-  - name: Install system dependencies 
+  - name: Install system dependencies
     apt: name={{ item }} state=present update_cache=yes
     sudo: true
     sudo_user: root
@@ -45,7 +46,7 @@
 
   - name: Get ICE ARC code from git
     git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
-         dest=~/icearc-avhrr-sic
+         dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          force=yes key_file="{{ lookup('file', '/home/mikhaili/.ssh/metno.pub') }}"
     tags:
@@ -74,8 +75,8 @@
       - ssh
 
   - name: Run behaviour tests
-    shell: "{{ venv }}/bin/behave"
+    shell: "{{ venv }}/bin/behave --tags=wip"
     args:
-      chdir: ~/icearc-avhrr-sic
+      chdir: "{{ project_dir }}/codeshop/icearc-avhrr-sic"
     tags:
       - tests
