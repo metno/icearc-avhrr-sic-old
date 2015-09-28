@@ -10,10 +10,10 @@
     remote_sic_dir: /vol/fou/sicci1/data/NSIDC-SeaIce-CDR-v2/2008
     local_gac_dir: /disk1/gac-data
     local_sic_dir: /disk1/sic-data
-    # project_dir: /disk1/workspace/ice-arc
     project_dir: "/home/{{ dp_user }}/ice-arc"
     venv: "{{ project_dir }}/codeshop/venv"
-    test_date: "2008-07-01"
+    test_date: "20080701"
+    wip_branch: behave_compute-sic_feature # name of the branch to clone
 
   tasks:
   - name: Install system dependencies
@@ -39,6 +39,9 @@
       - behave
       - PyYAML
       - netCDF4
+      - python-dateutil
+    tags:
+      - pip
 
   - name: Install pypps_reader
     pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader'
@@ -48,6 +51,7 @@
     git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
          dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
+         version={{ wip_branch }}
          force=yes key_file="{{ lookup('file', '/home/mikhaili/.ssh/metno.pub') }}"
     tags:
       - git
