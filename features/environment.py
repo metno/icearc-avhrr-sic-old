@@ -8,3 +8,8 @@ def before_all(context):
     with open(context.playbook_path) as playbook:
         playbook = playbook.read()
     context.playbook = yaml.safe_load(playbook)
+    context.test_date_string = context.playbook[0]['test_date']
+    context.local_avhrr_dir = context.playbook[0]['vars']['local_gac_dir']
+    context.local_nsidc_dir = context.playbook[0]['vars']['local_sic_dir']
+
+    context.test_date = dateutils.parser.parse(context.test_date_string)
