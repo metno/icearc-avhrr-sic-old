@@ -26,7 +26,7 @@ def step_impl(context):
     cloudtype_filepath = get_filelist(data_dir, 'cloudtype')[0]
 
     avhrr = NwcSafPpsData(avhrr_filepath)
-    bt1 = avhrr_file.image1
+    bt1 = avhrr.image1
 
     angles = NwcSafPpsData(angles_filepath)
     cloudmask= NwcSafPpsData(cloudmask_filepath)
