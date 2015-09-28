@@ -1,7 +1,6 @@
 from behave import *
 import os
 import yaml
-import dateutil
 import glob
 from pypps_reader import NwcSafPpsData
 
@@ -12,7 +11,7 @@ def step_impl(context):
     # identify where the storage is, get it from the playbook
     # load four parameters for a given date
 
-    def get_file_list(data_dir, some_pattern):
+    def get_filelist(data_dir, some_pattern):
         unsorted_list = glob.glob(os.path.join(data_dir, '*' + some_pattern + '*'))
         sorted_list = sorted(unsorted_list)
         return sorted_list
