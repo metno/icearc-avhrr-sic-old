@@ -1,6 +1,7 @@
 from behave import *
 import yaml
 import os
+from dateutil import parser as dateutil_parser
 
 def before_all(context):
     context.ansible_basedir = os.path.join(os.path.curdir, 'ansible')
@@ -12,4 +13,4 @@ def before_all(context):
     context.local_avhrr_dir = context.playbook[0]['vars']['local_gac_dir']
     context.local_nsidc_dir = context.playbook[0]['vars']['local_sic_dir']
 
-    context.test_date = dateutils.parser.parse(context.test_date_string)
+    context.test_date = dateutil_parser.parse(context.test_date_string)
