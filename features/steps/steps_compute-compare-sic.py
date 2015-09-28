@@ -32,7 +32,7 @@ def step_impl(context):
     cloudmask= NwcSafPpsData(cloudmask_filepath)
     cloudtype = NwcSafPpsData(cloudtype_filepath)
 
-    assert cloudmask.data is not None
-    assert angles.data is not None
+    assert cloudmask.cloudmask.data is not None
+    assert angles.image1.data is not None
     assert bt1.data is not None
-    assert cloudtype.data is not None
+    assert cloudtype.cloudtype.data is not None
