@@ -53,7 +53,7 @@
 
   - name: Get the code from gitlab
     # assume vagrant.pub key has been copied over to the destination
-    git: repo=git@gitlab.com/mitkin/icearc-avhrr-sic.git
+    git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
          dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          version={{ wip_branch }}
