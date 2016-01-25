@@ -1,11 +1,10 @@
 ---
-- hosts: all
+- hosts: local
   gather_facts: no
   user: "{{ dp_user }}"
   sudo_user: root
   vars:
     user: "{{ dp_user }}"
-    color: brown
     remote_gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
     remote_sic_dir: /vol/fou/sicci1/data/NSIDC-SeaIce-CDR-v2/2008
     local_gac_dir: /disk1/gac-data
@@ -33,7 +32,8 @@
     file: path={{ project_dir }} state=directory
 
   - name: Update pip
-    pip: virtualenv={{ venv }} name={{ item }} extra_args='--upgrade'
+    pip: virtualenv={{ venv }} name={{ item }}
+         virtualenv_site_packages=yes
     with_items:
       - pip
       - behave
