@@ -62,28 +62,6 @@
     tags:
       - git
 
-  - name: Make a mount point
-    file: path={{ item }} state=directory owner={{ user}}
-    with_items:
-      - "{{ local_gac_dir }}"
-      - "{{ local_sic_dir }}"
-    sudo: true
-    ignore_errors: true
-    tags:
-      - ssh
-
-  - name: Mount data directory
-    shell: sshfs "mikhaili@{{ gac_data_host }}:{{ remote_gac_dir }}" {{ local_gac_dir }} -o reconnect
-    ignore_errors: true
-    tags:
-      - ssh
-
-  - name: Mount SIC data directory
-    shell: sshfs "mikhaili@{{ gac_data_host }}:{{ remote_sic_dir }}" {{ local_sic_dir }} -o reconnect,nonempty
-    ignore_errors: true
-    tags:
-      - ssh
-
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave --tags=wip"
     args:
