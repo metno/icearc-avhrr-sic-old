@@ -46,7 +46,7 @@
       - pip
 
   - name: Install pypps_reader
-    pip: name='git+https://github.com:mitkin/pypps_reader.git#egg=pypps_reader'
+    pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader'
          virtualenv={{ venv }}
     tags:
       - pip
