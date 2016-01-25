@@ -9,7 +9,8 @@
     remote_sic_dir: /vol/fou/sicci1/data/NSIDC-SeaIce-CDR-v2/2008
     local_gac_dir: /disk1/gac-data
     local_sic_dir: /disk1/sic-data
-    project_dir: "/home/{{ dp_user }}/ice-arc"
+    home_dir: "/home/{{ dp_user }}"
+    project_dir: "{{ home_dir }}/ice-arc"
     venv: "{{ project_dir }}/codeshop/venv"
     test_date: "20080701"
     wip_branch: behave_compute-sic_feature # name of the branch to clone
@@ -50,13 +51,17 @@
     tags:
       - pip
 
-  - name: Get ICE ARC code from git
+  - name: Get the code from gitlab
     # assume vagrant.pub key has been copied over to the destination
-    git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
+    git: repo={{ item }}
          dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          version={{ wip_branch }}
-         force=yes key_file=/home/vagrant/.ssh/vagrant.pub
+         force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
+    with_items:
+      - git@gitlab.met.no:FoU-HI-RS/probabilistic-classifier.git
+      - git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
+      - git@gitlab.met.no:FoU-HI-RS/sumfeatclassat.git
     tags:
       - git
 
