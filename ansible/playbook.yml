@@ -58,7 +58,7 @@
          accept_hostkey=yes
          version={{ wip_branch }}
          force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
-         track_submodules=yes recursive=yes
+         recursive=yes
     tags:
       - git
 
