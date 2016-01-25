@@ -46,22 +46,19 @@
       - pip
 
   - name: Install pypps_reader
-    pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader'
+    pip: name='git+https://github.com:mitkin/pypps_reader.git#egg=pypps_reader'
          virtualenv={{ venv }}
     tags:
       - pip
 
   - name: Get the code from gitlab
     # assume vagrant.pub key has been copied over to the destination
-    git: repo={{ item }}
+    git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
          dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          version={{ wip_branch }}
          force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
-    with_items:
-      - git@gitlab.met.no:FoU-HI-RS/probabilistic-classifier.git
-      - git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
-      - git@gitlab.met.no:FoU-HI-RS/sumfeatclassat.git
+         track_submodules=yes recursive=yes
     tags:
       - git
 
