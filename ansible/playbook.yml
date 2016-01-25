@@ -1,5 +1,5 @@
 ---
-- hosts: local
+- hosts: all
   gather_facts: no
   user: "{{ dp_user }}"
   sudo_user: root
@@ -15,6 +15,7 @@
     wip_branch: behave_compute-sic_feature # name of the branch to clone
 
   tasks:
+
   - name: Install system dependencies
     apt: name={{ item }} state=present update_cache=yes
     sudo: true
@@ -50,11 +51,12 @@
       - pip
 
   - name: Get ICE ARC code from git
+    # assume vagrant.pub key has been copied over to the destination
     git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
          dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          version={{ wip_branch }}
-         force=yes key_file="{{ lookup('file', '/home/mikhaili/.ssh/metno.pub') }}"
+         force=yes key_file=/home/vagrant/.ssh/vagrant.pub
     tags:
       - git
 

@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "ansible" do |ansible|
       ansible.limit = "all"
       ansible.playbook = "ansible/playbook.yml"
-      # ansible.inventory_path = "ansible/hosts"
+      ansible.inventory_path = "ansible/hosts"
   end
 
   config.ssh.private_key_path = "~/.ssh/id_rsa"
