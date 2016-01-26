@@ -11,7 +11,7 @@
     local_sic_dir: /disk1/sic-data
     home_dir: "/home/{{ dp_user }}"
     project_dir: "{{ home_dir }}/ice-arc"
-    venv: "{{ project_dir }}/codeshop/venv"
+    venv: "{{ home_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
     wip_branch: behave_compute-sic_feature # name of the branch to clone
 
@@ -40,6 +40,7 @@
       - pip
       - behave
       - PyYAML
+      - numpy
       - netCDF4
       - python-dateutil
     tags:
