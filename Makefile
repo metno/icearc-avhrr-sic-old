@@ -2,7 +2,7 @@ $(ssh-add ~/.ssh/vagrant)
 
 deploy-vis: ; ansible-playbook -i ansible/hosts ansible/playbook.yml --skip-tags=apt --limit=vism2
 
-deploy-vagrant: ; ansible-playbook -i ansible/hosts ansible/playbook.yml --limit=vagrant --skip-tags=apt --tags=git
+deploy-vagrant: ; ansible-playbook -i ansible/hosts ansible/playbook.yml --limit=vagrant --skip-tags=apt
 
 deploy-local: ; ansible-playbook -i ansible/hosts ansible/playbook.yml --limit=local --skip-tags=apt
 
