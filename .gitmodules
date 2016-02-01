@@ -1,6 +1,6 @@
 [submodule "probabilistic-classifier"]
 	path = probabilistic-classifier
-	url = git://gitlab.com/mitkin/probabilistic-classifier.git
+	url = git@gitlab.com:mitkin/probabilistic-classifier.git
 [submodule "sumfeatclassat"]
 	path = sumfeatclassat
-	url = git://gitlab.com/mitkin/sumfeatclassat.git
+	url = git@gitlab.com:mitkin/sumfeatclassat.git
