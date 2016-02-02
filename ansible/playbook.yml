@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: all 
   gather_facts: no
   user: "{{ dp_user }}"
   sudo_user: root
@@ -7,13 +7,12 @@
     user: "{{ dp_user }}"
     remote_gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
     remote_sic_dir: /vol/fou/sicci1/data/NSIDC-SeaIce-CDR-v2/2008
-    local_gac_dir: /disk1/gac-data
-    local_sic_dir: /disk1/sic-data
     home_dir: "/home/{{ dp_user }}"
     project_dir: "{{ home_dir }}/ice-arc"
+    data_dir: "{{ project_dirc }}/data"
     venv: "{{ home_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
-    wip_branch: behave_compute-sic_feature # name of the branch to clone
+    wip_branch: master # name of the branch to clone
 
   tasks:
 
@@ -32,6 +31,8 @@
 
   - name: Create project directory
     file: path={{ project_dir }} state=directory
+    tags:
+      - dir
 
   - name: Update pip
     pip: virtualenv={{ venv }} name={{ item }}

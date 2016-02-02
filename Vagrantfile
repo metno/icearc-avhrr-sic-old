@@ -16,12 +16,12 @@ Vagrant.configure(2) do |config|
   config.vm.network :public_network
 
   config.vm.provision "ansible" do |ansible|
-      ansible.limit = "all"
+      ansible.limit = "vagrant"
       ansible.playbook = "ansible/playbook.yml"
       ansible.inventory_path = "ansible/hosts"
   end
 
-  config.ssh.private_key_path = "~/.ssh/id_rsa"
+  config.ssh.private_key_path = "~/.ssh/vagrant"
   config.ssh.forward_agent = true
 
   # Disable automatic box update checking. If you disable this, then
