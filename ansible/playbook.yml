@@ -1,15 +1,13 @@
 ---
-- hosts: all 
+- hosts: all
   gather_facts: no
   user: "{{ dp_user }}"
   sudo_user: root
   vars:
     user: "{{ dp_user }}"
-    remote_gac_dir: /vol/fou/sicci1/data/gacrepr1/pps_v1
-    remote_sic_dir: /vol/fou/sicci1/data/NSIDC-SeaIce-CDR-v2/2008
     home_dir: "/home/{{ dp_user }}"
     project_dir: "{{ home_dir }}/ice-arc"
-    data_dir: "{{ project_dirc }}/data"
+    data_dir: "{{ project_dir }}/data"
     venv: "{{ home_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
     wip_branch: master # name of the branch to clone
@@ -63,6 +61,23 @@
          recursive=yes
     tags:
       - git
+
+  - name: Create GAC data folder
+    file: path="{{ data_dir }}/gac" state=directory
+    tags:
+      - gacdata
+
+  - name: Download gac data
+    get_url: url=https://www.dropbox.com/s/ms5wysnqd07xjvg/gac-data.tar.gz?dl=1 dest="{{ data_dir}}/gac/gac-data.tar.gz"
+    tags:
+      - gacdata
+
+  - name: Unarchive GAC data
+    unarchive: src="{{ data_dir }}/gac/gac-data.tar.gz"
+               dest="{{ data_dir }}/gac"
+               copy=no
+    tags:
+      - gacdata
 
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave --tags=wip"

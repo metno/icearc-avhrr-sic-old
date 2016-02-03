@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "hashicorp/precise32"
+  config.vm.box = "ubuntu/trusty64"
   config.vm.network :public_network
 
   config.vm.provision "ansible" do |ansible|
@@ -23,6 +23,12 @@ Vagrant.configure(2) do |config|
 
   config.ssh.private_key_path = "~/.ssh/vagrant"
   config.ssh.forward_agent = true
+
+#config.vm.provider "virtualbox" do |v|
+   # v.customize ["modifyvm", :id, "--nictype1", "virtio"]
+   # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+   # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+#end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
