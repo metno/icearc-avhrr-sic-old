@@ -79,6 +79,23 @@
     tags:
       - gacdata
 
+  - name: Create SIC folder
+    file: path="{{ data_dir }}/sic" state=directory
+    tags:
+      - sicdata
+
+  - name: Downlad SIC data OSI SAF
+    get_url: url=ftp://osisaf.met.no/reprocessed/ice/conc/v1p2/2008/08/ice_conc_nh_polstere-100_reproc_200808011200.nc.gz
+             dest="{{ data_dir}}/sic/sic-data.gz"
+    tags:
+      - sicdata
+
+  - name: Uncompress SIC data
+    shell: gzip -d -f "{{ data_dir }}/sic/sic-data.gz"
+    tags:
+      - sicdata
+
+
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave --tags=wip"
     args:
