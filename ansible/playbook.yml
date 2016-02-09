@@ -101,6 +101,6 @@
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave --tags=wip"
     args:
-      chdir: "{{ base_dir }}/codeshop/icearc-avhrr-sic"
+      chdir: "{{ base_dir }}/codeshop"
     tags:
       - tests
