@@ -6,8 +6,9 @@
   vars:
     user: "{{ dp_user }}"
     home_dir: "/home/{{ dp_user }}"
-    project_dir: "{{ home_dir }}/ice-arc"
-    data_dir: "{{ project_dir }}/data"
+    base_dir: "{{ base_dir }}"
+    local_gac_dir: "{{ base_dir }}/gac"
+    local_sic_dir: "{{ base_dir }}/sic"
     venv: "{{ home_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
     wip_branch: master # name of the branch to clone
@@ -28,7 +29,7 @@
       - apt
 
   - name: Create project directory
-    file: path={{ project_dir }} state=directory
+    file: path={{ base_dir }} state=directory
     tags:
       - dir
 
@@ -54,7 +55,7 @@
   - name: Get the code from gitlab
     # assume vagrant.pub key has been copied over to the destination
     git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
-         dest="{{ project_dir }}/codeshop/icearc-avhrr-sic"
+         dest="{{ base_dir }}/codeshop/icearc-avhrr-sic"
          accept_hostkey=yes
          version={{ wip_branch }}
          force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
@@ -63,35 +64,35 @@
       - git
 
   - name: Create GAC data folder
-    file: path="{{ data_dir }}/gac" state=directory
+    file: path="{{ local_gac_dir }}" state=directory
     tags:
       - gacdata
 
   - name: Download gac data
-    get_url: url=https://www.dropbox.com/s/ms5wysnqd07xjvg/gac-data.tar.gz?dl=1 dest="{{ data_dir}}/gac/gac-data.tar.gz"
+    get_url: url=https://www.dropbox.com/s/ms5wysnqd07xjvg/gac-data.tar.gz?dl=1 dest="{{ local_gac_dir}}/gac-data.tar.gz"
     tags:
       - gacdata
 
   - name: Unarchive GAC data
-    unarchive: src="{{ data_dir }}/gac/gac-data.tar.gz"
-               dest="{{ data_dir }}/gac"
+    unarchive: src="{{ local_gac_dir }}/gac-data.tar.gz"
+               dest="{{ local_gac_dir }}"
                copy=no
     tags:
       - gacdata
 
   - name: Create SIC folder
-    file: path="{{ data_dir }}/sic" state=directory
+    file: path="{{ local_sic_dir }}" state=directory
     tags:
       - sicdata
 
   - name: Downlad SIC data OSI SAF
     get_url: url=ftp://osisaf.met.no/reprocessed/ice/conc/v1p2/2008/08/ice_conc_nh_polstere-100_reproc_200808011200.nc.gz
-             dest="{{ data_dir}}/sic/sic-data.gz"
+             dest="{{ local_sic_dir }}/sic-data.gz"
     tags:
       - sicdata
 
   - name: Uncompress SIC data
-    shell: gzip -d -f "{{ data_dir }}/sic/sic-data.gz"
+    shell: gzip -d -f "{{ local_sic_dir }}/sic-data.gz"
     tags:
       - sicdata
 
@@ -99,6 +100,6 @@
   - name: Run behaviour tests
     shell: "{{ venv }}/bin/behave --tags=wip"
     args:
-      chdir: "{{ project_dir }}/codeshop/icearc-avhrr-sic"
+      chdir: "{{ base_dir }}/codeshop/icearc-avhrr-sic"
     tags:
       - tests

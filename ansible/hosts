@@ -1,5 +1,5 @@
 [local]
-127.0.0.1 ansible_connection=local dp_user=mikhaili gac_data_host=127.0.0.1
+ansible_host=localhost ansible_connection=local dp_user=mikhaili gac_data_host=127.0.0.1
 
 [vagrant]
 127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=/home/mikhaili/.ssh/vagrant ansible_connection=ssh dp_user=vagrant ansible_ssh_user=vagrant gac_data_host=10.0.2.2
