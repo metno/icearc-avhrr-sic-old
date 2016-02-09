@@ -7,8 +7,8 @@
     user: "{{ dp_user }}"
     home_dir: "/home/{{ dp_user }}"
     base_dir: "{{ base_dir }}"
-    local_gac_dir: "{{ base_dir }}/gac"
-    local_sic_dir: "{{ base_dir }}/sic"
+    local_gac_dir: "{{ base_dir }}/data/gac"
+    local_sic_dir: "{{ base_dir }}/data/sic"
     venv: "{{ base_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
     wip_branch: master # name of the branch to clone
