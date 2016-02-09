@@ -2,7 +2,6 @@ from behave import *
 import yaml
 import os
 from dateutil import parser as dateutil_parser
-import jinja2
 
 
 
@@ -13,7 +12,7 @@ def before_all(context):
         playbook = playbook.read()
     context.playbook = yaml.safe_load(playbook)
     context.test_date_string = context.playbook[0]['vars']['test_date']
-    context.local_gac_dir = 'data/gac'
-    context.local_sic_dir = 'data/sic'
-
+    context.data_dir = os.path.abspath(os.path.join(os.path.abspath(__file__), os.path.pardir, 'data'))
+    context.local_gac_dir = os.path.join(context.data_dir, 'gac')
+    context.local_sic_dir = os.path.join(context.data_dir, 'sic')
     context.test_date = dateutil_parser.parse(context.test_date_string)
