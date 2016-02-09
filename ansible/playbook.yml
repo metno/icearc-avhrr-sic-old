@@ -9,7 +9,7 @@
     base_dir: "{{ base_dir }}"
     local_gac_dir: "{{ base_dir }}/gac"
     local_sic_dir: "{{ base_dir }}/sic"
-    venv: "{{ home_dir }}/.virtualenvs/ice-arc"
+    venv: "{{ base_dir }}/.virtualenvs/ice-arc"
     test_date: "20080701"
     wip_branch: master # name of the branch to clone
 
@@ -33,6 +33,17 @@
     tags:
       - dir
 
+  - name: Get the code from gitlab
+    # assume vagrant.pub key has been copied over to the destination
+    git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
+         dest="{{ base_dir }}/codeshop"
+         accept_hostkey=yes
+         version={{ wip_branch }}
+         force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
+         recursive=yes
+    tags:
+      - git
+
   - name: Update pip
     pip: virtualenv={{ venv }} name={{ item }}
          virtualenv_site_packages=yes
@@ -52,16 +63,6 @@
     tags:
       - pip
 
-  - name: Get the code from gitlab
-    # assume vagrant.pub key has been copied over to the destination
-    git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
-         dest="{{ base_dir }}/codeshop/icearc-avhrr-sic"
-         accept_hostkey=yes
-         version={{ wip_branch }}
-         force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
-         recursive=yes
-    tags:
-      - git
 
   - name: Create GAC data folder
     file: path="{{ local_gac_dir }}" state=directory
