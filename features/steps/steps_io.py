@@ -15,22 +15,21 @@ def step_impl(context):
 @then(u'there should be a playbook sitting in the Ansible directory')
 def step_impl(context):
     # Check there is a readable playbook in the Ansible directory
-    assert context.playbook[0]['vars']['local_gac_dir']
+    assert context.playbook[0]['vars']['test_date']
 
 
 @when(u'data storage is avaiable')
 def step_impl(context):
     assert context.ansible_basedir
     assert context.playbook
-    context.data_dir = context.playbook[0]['vars']['local_gac_dir']
-    assert os.path.exists(context.data_dir)
-
+    assert os.path.exists(context.local_gac_dir)
 
 @then(u'it contains NOAA GAC satellite data')
 def step_impl(context):
-    year = "2008"
-    date = "20080710"
-    data_dir = os.path.join(context.data_dir, year, date)
+    # form year from test date
+    year = context.test_date.strftime('%Y')
+    date = context.test_date.strftime('%Y%m%d')
+    data_dir = os.path.join(context.local_gac_dir, year, date)
     assert os.path.exists(data_dir)
     context.data_dir = data_dir
 
@@ -61,10 +60,10 @@ def step_impl(context):
     sic_data_path = context.sic_data_path
     sic_file_list = os.listdir(sic_data_path)
     sic_data = netCDF4.Dataset(os.path.join(sic_data_path, sic_file_list[0]))
-    assert isinstance(sic_data.variables['seaice_conc_cdr'][:], numpy.ndarray)
+    assert isinstance(sic_data.variables['ice_conc'][:], numpy.ndarray)
 
 @given(u'the playbook contains SIC data path and is not empty')
 def step_impl(context):
-    context.sic_data_path = context.playbook[0]['vars']['local_sic_dir']
+    context.sic_data_path = context.local_sic_dir
     assert os.path.exists(context.sic_data_path)
     assert any(os.listdir(context.sic_data_path))

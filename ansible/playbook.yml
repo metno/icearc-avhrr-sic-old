@@ -10,7 +10,7 @@
     local_gac_dir: "{{ base_dir }}/data/gac"
     local_sic_dir: "{{ base_dir }}/data/sic"
     venv: "{{ base_dir }}/.virtualenvs/ice-arc"
-    test_date: "20080701"
+    test_date: "20080801"
     wip_branch: master # name of the branch to clone
 
   tasks:
