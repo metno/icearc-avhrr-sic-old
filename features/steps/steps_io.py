@@ -53,9 +53,12 @@ def step_impl(context):
 
     avhrr_data_file = os.path.join(context.data_dir, context.avhrr_file_list[0])
     avhrr_data_ch1 = NwcSafPpsData(avhrr_data_file).image1.data
+    # make sure the data is for the same date as the test_date
+    # XXX ugly fugly
+    assert context.test_date.strftime('%Y%m%d') == NwcSafPpsData(avhrr_data_file)._what['time_slot'].strftime('%Y%m%d')
     assert isinstance(avhrr_data_ch1, numpy.ndarray)
 
-@then(u'the NSIDC data can be read')
+@then(u'the OSI SAF data can be read')
 def step_impl(context):
     sic_data_path = context.sic_data_path
     sic_file_list = os.listdir(sic_data_path)

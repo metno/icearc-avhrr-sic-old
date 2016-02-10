@@ -12,6 +12,6 @@ Feature: Check deployment went successfully
         Then the AVHRR data can be read using pypps_reader
 
     @wip
-    Scenario: NSIDC sea ice data is accessible
+    Scenario: OSI SAF sea ice data is accessible
         Given the playbook contains SIC data path and is not empty
-        Then the NSIDC data can be read
+        Then the OSI SAF data can be read
