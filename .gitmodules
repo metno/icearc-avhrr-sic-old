@@ -4,3 +4,6 @@
 [submodule "sumfeatclassat"]
 	path = sumfeatclassat
 	url = git@gitlab.com:mitkin/sumfeatclassat.git
+[submodule "compute_sic"]
+	path = compute_sic
+	url = git@gitlab.com:mitkin/compute_sic.git
