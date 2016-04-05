@@ -7,6 +7,7 @@
     user: mikhaili
     home_dir: "/disk1/workspace/tmp"
     base_dir: "{{ home_dir }}/icearc-avhrr-sic"
+    codespace_dir: "{{ base_dir }}/codeshop"
     coeffs_dir: "{{ base_dir }}/data/coeffs"
     coeffs_file: "{{ coeffs_dir }}/coeffPDF_daytime_mean-std-line_v2p2.txt"
     local_gac_dir: "{{ base_dir }}/data/gac"
@@ -40,7 +41,7 @@
   - name: Get Ansible code from gitlab
     # assume vagrant.pub key has been copied over to the destination
     git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
-         dest="{{ base_dir }}/codeshop"
+         dest="{{ codespace_dir }}"
          accept_hostkey=yes
          version={{ wip_branch }}
          force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
@@ -119,7 +120,8 @@
 
   - name: Run `compute_sic.py` with test data
     shell: python compute_sic.py --input_files "{{ local_gac_dir }}/*" --output_directory="{{ output_directory }}" --coeffs={{ coeffs_file }}
-    chdir: "{{ compute_sic_repo }}"
+    args:
+      chdir: "{{ codespace_dir }}/compute_sic"
     tags:
       - compute_sic
 
