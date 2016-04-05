@@ -1,14 +1,17 @@
 ---
 - hosts: all
   gather_facts: no
-  user: "{{ dp_user }}"
+  user: "mikhaili"
   sudo_user: root
   vars:
-    user: "{{ dp_user }}"
-    home_dir: "/home/{{ dp_user }}"
-    base_dir: "{{ base_dir }}"
+    user: mikhaili
+    home_dir: "/disk1/workspace/tmp"
+    base_dir: "{{ home_dir }}/icearc-avhrr-sic"
+    coeffs_dir: "{{ base_dir }}/data/coeffs"
+    coeffs_file: "{{ coeffs_dir }}/coeffPDF_daytime_mean-std-line_v2p2.txt"
     local_gac_dir: "{{ base_dir }}/data/gac"
     local_sic_dir: "{{ base_dir }}/data/sic"
+    output_directory: "{{ base_dir }}/data/avhrr-sic-output"
     venv: "{{ base_dir }}/.virtualenvs/ice-arc"
     test_date: "20080801"
     wip_branch: master # name of the branch to clone
@@ -34,7 +37,7 @@
     tags:
       - dir
 
-  - name: Get the code from gitlab
+  - name: Get Ansible code from gitlab
     # assume vagrant.pub key has been copied over to the destination
     git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
          dest="{{ base_dir }}/codeshop"
@@ -97,6 +100,28 @@
     shell: gzip -d -f "{{ local_sic_dir }}/sic-data.gz"
     tags:
       - sicdata
+
+  - name: Create folder for coefficients
+    file: path="{{ coeffs_dir }}" state=directory
+    tags:
+      - coeffs
+
+  - name: Download PDF coefficients for classifiyng surface types
+    get_url: url=https://www.dropbox.com/s/vkegv24y1ydc63f/coeffs.tar.gz?dl=1 dest="{{ coeffs_dir }}/coeffs.tar.gz"
+    tags:
+      - coeffs
+
+
+  - name: Unarchive PDF coefficients
+    unarchive: src="{{ coeffs_dir }}/coeffs.tar.gz" dest="{{ coeffs_dir }}"
+    tags:
+      - coeffs
+
+  - name: Run `compute_sic.py` with test data
+    shell: python compute_sic.py --input_files "{{ local_gac_dir }}/*" --output_directory="{{ output_directory }}" --coeffs={{ coeffs_file }}
+    chdir: "{{ compute_sic_repo }}"
+    tags:
+      - compute_sic
 
 
   - name: Run behaviour tests
