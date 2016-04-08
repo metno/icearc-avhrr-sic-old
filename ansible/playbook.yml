@@ -14,6 +14,7 @@
     local_sic_dir: "{{ base_dir }}/data/sic"
     output_directory: "{{ base_dir }}/data/avhrr-sic-output"
     venv: "{{ base_dir }}/.virtualenvs/ice-arc"
+    test_year: "2008"
     test_date: "20080801"
     wip_branch: master # name of the branch to clone
 
@@ -126,7 +127,7 @@
       - coeffs
 
   - name: Run `compute_sic.py` with test data
-    shell: python compute_sic.py --input-file "{{ local_gac_dir }}/noaa18*avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18
+    shell: python compute_sic.py --input-file "{{ local_gac_dir }}/{{ test_year }}/{{ test_date }}/noaa18*avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18
     args:
       chdir: "{{ codespace_dir }}/compute_sic"
     tags:
