@@ -49,6 +49,13 @@
     tags:
       - git
 
+  - name: Update submodules to the latest commit
+    shell: git submodule foreach git pull origin master
+    args:
+      chdir: "{{ codespace_dir }}"
+    tags:
+      - git
+
   - name: Update pip
     pip: virtualenv={{ venv }} name={{ item }}
          virtualenv_site_packages=yes
