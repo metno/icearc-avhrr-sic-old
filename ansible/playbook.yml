@@ -126,7 +126,7 @@
       - coeffs
 
   - name: Run `compute_sic.py` with test data
-    shell: python compute_sic.py --input_files "{{ local_gac_dir }}/*" --output_directory="{{ output_directory }}" --coeffs={{ coeffs_file }}
+    shell: python compute_sic.py --input_file "{{ local_gac_dir }}/*" --output_directory="{{ output_directory }}" --coeffs={{ coeffs_file }}
     args:
       chdir: "{{ codespace_dir }}/compute_sic"
     tags:
