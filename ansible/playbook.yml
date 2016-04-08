@@ -40,7 +40,7 @@
 
   - name: Get Ansible code from gitlab
     # assume vagrant.pub key has been copied over to the destination
-    git: repo=git@gitlab.com:mitkin/icearc-avhrr-sic.git
+    git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
          dest="{{ codespace_dir }}"
          accept_hostkey=yes
          version={{ wip_branch }}
