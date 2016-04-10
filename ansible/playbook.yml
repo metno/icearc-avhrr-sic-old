@@ -127,7 +127,7 @@
       - coeffs
 
   - name: Run `compute_sic.py` with test data
-    shell: python compute_sic.py --input-file "{{ local_gac_dir }}/{{ test_year }}/{{ test_date }}/noaa18*avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18
+    shell: python compute_sic.py --input-file "{{ local_gac_dir }}/{{ test_year }}/{{ test_date }}/noaa18_20080801_1220_99999_satproj_00000_12119_avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18 -a ./areas.cfg
     args:
       chdir: "{{ codespace_dir }}/compute_sic"
     tags:
