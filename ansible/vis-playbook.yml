@@ -122,9 +122,14 @@
 
 
   - name: Unarchive PDF coefficients
-    unarchive: src="{{ coeffs_dir }}/coeffs.tar.gz" dest="{{ coeffs_dir }}"
+    unarchive: src="{{ coeffs_dir }}/coeffs.tar.gz" dest="{{ coeffs_dir }}" copy=no
     tags:
       - coeffs
+
+  - name: Create output directory
+    file: path="{{ output_directory }}" state=directory
+    tags:
+      - compute_sic
 
   - name: Run `compute_sic.py` with test data
     shell: python compute_sic.py --input-file "{{ local_gac_dir }}/{{ test_year }}/{{ test_date }}/noaa18_20080801_1220_99999_satproj_00000_12119_avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18 -a ./areas.cfg
