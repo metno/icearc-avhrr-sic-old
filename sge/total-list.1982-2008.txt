@@ -1,0 +1,27 @@
+1982 noaa7
+1983 noaa7
+1984 noaa7
+1985 noaa9
+1986 noaa9
+1987 noaa9
+1988 noaa9
+1989 noaa11
+1990 noaa11
+1991 noaa11
+1992 noaa11 noaa12
+1993 noaa11 noaa12
+1994 noaa11 noaa12
+1995 noaa12 noaa14
+1996 noaa12 noaa14
+1997 noaa12 noaa14
+1998 noaa12 noaa14
+1999 noaa14
+2000 noaa14 noaa15
+2001 noaa14 noaa15 noaa16
+2002 noaa15 noaa16 noaa17
+2003 noaa15 noaa16 noaa17
+2004 noaa15 noaa16 noaa17
+2005 noaa15 noaa16 noaa17 noaa18
+2006 noaa15 noaa16 noaa17 noaa18
+2007 metop02 noaa15 noaa16 noaa17 noaa18
+2008 metop02 noaa15 noaa16 noaa17 noaa18
