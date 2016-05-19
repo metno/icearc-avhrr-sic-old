@@ -1,14 +1,16 @@
 #!/bin/bash
 
-SENSORS_LIST=( $1 )
-DATE=$2
+# SENSORS_LIST=( $1 )
+DATE="${@: -1}" # last element of the array
+
+SENSORS_LIST=( "${@}" )
+unset SENSORS_LIST[${#SENSORS_LIST[@]}-1] # get rid of the last element of the array which is date
 
 YEAR=$(date -d ${DATE}01 +%Y)
 MONTH=$(date -d ${DATE}01 +%m)
 
 source /lustre/storeB/users/mikhaili/icearc-avhrr-sic/env/lustre-env.sh
 
-echo DATE: $DATE
 OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac/$YEAR/$MONTH
 if [ ! -d "$OUTPUT_DIR]" ]; then
     mkdir -p $OUTPUT_DIR

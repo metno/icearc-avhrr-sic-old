@@ -10,4 +10,4 @@ echo $YEAR
 
 source /lustre/storeB/users/mikhaili/icearc-avhrr-sic/env/lustre-env.sh
 sensors=$(cat list.$YEAR.txt)
-/lustre/storeB/users/mikhaili/icearc-avhrr-sic/scripts/process_august.sh $(printf $sensors) $DATE
+/lustre/storeB/users/mikhaili/icearc-avhrr-sic/scripts/resample_gac.sh $(printf '%q ' ${sensors[@]}) $DATE
