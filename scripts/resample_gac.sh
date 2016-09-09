@@ -11,7 +11,7 @@ MONTH=$(date -d ${DATE}01 +%m)
 
 source /lustre/storeB/users/mikhaili/icearc-avhrr-sic/env/lustre-env.sh
 
-OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac/$YEAR/$MONTH
+OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac-12k/$YEAR/$MONTH
 if [ ! -d "$OUTPUT_DIR]" ]; then
     mkdir -p $OUTPUT_DIR
 fi
