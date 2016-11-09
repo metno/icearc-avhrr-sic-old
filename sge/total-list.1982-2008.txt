@@ -8,20 +8,27 @@
 1989 noaa11
 1990 noaa11
 1991 noaa11
-1992 noaa11 noaa12
-1993 noaa11 noaa12
-1994 noaa11 noaa12
-1995 noaa12 noaa14
-1996 noaa12 noaa14
-1997 noaa12 noaa14
-1998 noaa12 noaa14
+1992 noaa12
+1993 noaa12
+1994 noaa12
+1995 noaa14
+1996 noaa14
+1997 noaa14
+1998 noaa14
 1999 noaa14
-2000 noaa14 noaa15
-2001 noaa14 noaa15 noaa16
-2002 noaa15 noaa16 noaa17
-2003 noaa15 noaa16 noaa17
-2004 noaa15 noaa16 noaa17
-2005 noaa15 noaa16 noaa17 noaa18
-2006 noaa15 noaa16 noaa17 noaa18
-2007 metop02 noaa15 noaa16 noaa17 noaa18
-2008 metop02 noaa15 noaa16 noaa17 noaa18
+2000 noaa14
+2001 noaa16
+2002 noaa16
+2003 noaa16
+2004 noaa16
+2005 noaa18
+2006 noaa18
+2007 noaa18
+2008 noaa18
+2009 noaa18
+2010 noaa18
+2011 noaa18
+2012 noaa18
+2013 noaa18
+2014 noaa18
+2015 noaa18
