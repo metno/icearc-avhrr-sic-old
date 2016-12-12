@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PREFIX='gacv2-10k'
+PREFIX='gacv2-4k'
 
 SENSORS_LIST=( $1 )
 DATE="${@: -1}" # last element of the array
@@ -19,7 +19,7 @@ fi
 
 source /lustre/storeB/users/mikhaili/icearc-avhrr-sic/env/lustre-env.sh
 
-OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac-${PREFIX}/$YEAR/$MONTH
+OUTPUT_DIR=${STORAGE_DIR}/data/resampled-avhrr-gac-${PREFIX}/$YEAR/$MONTH
 if [ ! -d "$OUTPUT_DIR]" ]; then
     mkdir -p $OUTPUT_DIR
 fi
@@ -38,6 +38,6 @@ for SENSOR in "${SENSORS_LIST[@]}"; do
 
     for i in `find ${GACDIR}/$YEAR/${YEAR}${MONTH}??/*_avhrr_${SENSOR}*Z.h5`;
        do echo $i $SENSOR_NAME;
-          python $PROJECT_DIR/codeshop/compute_sic/resample_gac.py --input-file $i --output-dir=$OUTPUT_DIR --sensor=avhrr_${SENSOR_NAME} -a $PROJECT_DIR/codeshop/compute_sic/areas.cfg
+          python $PROJECT_DIR/codeshop/compute_sic/resample_gac.py --area-name nsidc_stere_north_4k  --input-file $i --output-dir=$OUTPUT_DIR --sensor=avhrr_${SENSOR_NAME} -a $PROJECT_DIR/codeshop/compute_sic/areas.cfg
     done
 done
