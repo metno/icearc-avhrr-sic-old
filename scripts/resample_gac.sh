@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# SENSORS_LIST=( $1 )
+PREFIX='gacv2-10k'
+
+SENSORS_LIST=( $1 )
 DATE="${@: -1}" # last element of the array
 
 SENSORS_LIST=( "${@}" )
@@ -9,9 +11,15 @@ unset SENSORS_LIST[${#SENSORS_LIST[@]}-1] # get rid of the last element of the a
 YEAR=$(date -d ${DATE}01 +%Y)
 MONTH=$(date -d ${DATE}01 +%m)
 
+if [ "$MONTH" -le 4 -a "$MONTH" -ge 10 ]; then
+    echo "MONTH: ${MONTH} outside summer range 05-09"
+    exit 1
+fi
+
+
 source /lustre/storeB/users/mikhaili/icearc-avhrr-sic/env/lustre-env.sh
 
-OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac-12k/$YEAR/$MONTH
+OUTPUT_DIR=/lustre/storeB/users/mikhaili/icearc-avhrr-sic/data/resampled-avhrr-gac-${PREFIX}/$YEAR/$MONTH
 if [ ! -d "$OUTPUT_DIR]" ]; then
     mkdir -p $OUTPUT_DIR
 fi
@@ -28,7 +36,7 @@ for SENSOR in "${SENSORS_LIST[@]}"; do
         then SENSOR_NAME='noaa07';
     fi
 
-    for i in `find /lustre/storeB/users/steinare/gacrepr1/pps_v1/$YEAR/${YEAR}${MONTH}??/${SENSOR}*avhrr.h5`;
+    for i in `find ${GACDIR}/$YEAR/${YEAR}${MONTH}??/*_avhrr_${SENSOR}*Z.h5`;
        do echo $i $SENSOR_NAME;
           python $PROJECT_DIR/codeshop/compute_sic/resample_gac.py --input-file $i --output-dir=$OUTPUT_DIR --sensor=avhrr_${SENSOR_NAME} -a $PROJECT_DIR/codeshop/compute_sic/areas.cfg
     done
