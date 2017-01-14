@@ -1,0 +1,147 @@
+---
+- hosts: all
+  gather_facts: no
+  user: "mikhaili"
+  sudo_user: root
+  vars:
+    user: mikhaili
+    home_dir: "/lustre/storeB/users/{{ user }}"
+    base_dir: "{{ home_dir }}/icearc-avhrr-sic"
+    codespace_dir: "{{ base_dir }}/codeshop"
+    coeffs_dir: "{{ base_dir }}/data/coeffs"
+    coeffs_file: "{{ coeffs_dir }}/coeffPDF_daytime_mean-std-line_v2p2.txt"
+    local_gac_dir: "{{ base_dir }}/data/gac"
+    local_sic_dir: "{{ base_dir }}/data/sic"
+    output_directory: "{{ base_dir }}/data/avhrr-sic-output"
+    venv: "{{ base_dir }}/.virtualenvs/ice-arc"
+    test_year: "2008"
+    test_date: "20080801"
+    wip_branch: master # name of the branch to clone
+
+  tasks:
+
+  - name: Install system dependencies
+    apt: name={{ item }} state=present update_cache=yes
+    sudo: true
+    sudo_user: root
+    with_items:
+      - git
+      - python-dev
+      - libhdf5-serial-dev
+      - libnetcdf-dev
+      - sshfs
+      - python-virtualenv
+    tags:
+      - apt
+
+  - name: Create project directory
+    file: path={{ base_dir }} state=directory
+    tags:
+      - dir
+
+  - name: Get Ansible code from gitlab
+    # assume vagrant.pub key has been copied over to the destination
+    git: repo=git@gitlab.met.no:istjenesten/icearc-avhrr-sic.git
+         dest="{{ codespace_dir }}"
+         accept_hostkey=yes
+         version={{ wip_branch }}
+         force=yes key_file="{{ home_dir }}/.ssh/vagrant.pub"
+         recursive=yes
+    tags:
+      - git
+
+  - name: Update submodules to the latest commit
+    shell: git submodule foreach git pull origin master
+    args:
+      chdir: "{{ codespace_dir }}"
+    tags:
+      - git
+
+  - name: Update pip
+    pip: virtualenv={{ venv }} name={{ item }}
+         virtualenv_site_packages=yes
+    with_items:
+      - pip
+      - behave
+      - PyYAML
+      - numpy
+      - netCDF4
+      - python-dateutil
+    tags:
+      - pip
+
+  - name: Install pypps_reader
+    pip: name='git+https://github.com/mitkin/pypps_reader.git#egg=pypps_reader'
+         virtualenv={{ venv }}
+    tags:
+      - pip
+
+
+  - name: Create GAC data folder
+    file: path="{{ local_gac_dir }}" state=directory
+    tags:
+      - gacdata
+
+  - name: Download gac data
+    get_url: url=https://www.dropbox.com/s/ms5wysnqd07xjvg/gac-data.tar.gz?dl=1 dest="{{ local_gac_dir}}/gac-data.tar.gz"
+    tags:
+      - gacdata
+
+  - name: Unarchive GAC data
+    unarchive: src="{{ local_gac_dir }}/gac-data.tar.gz"
+               dest="{{ local_gac_dir }}"
+               copy=no
+    tags:
+      - gacdata
+
+  - name: Create SIC folder
+    file: path="{{ local_sic_dir }}" state=directory
+    tags:
+      - sicdata
+
+  - name: Downlad SIC data OSI SAF
+    get_url: url=ftp://osisaf.met.no/reprocessed/ice/conc/v1p2/2008/08/ice_conc_nh_polstere-100_reproc_200808011200.nc.gz
+             dest="{{ local_sic_dir }}/sic-data.gz"
+    tags:
+      - sicdata
+
+  - name: Uncompress SIC data
+    shell: gzip -d -f "{{ local_sic_dir }}/sic-data.gz"
+    tags:
+      - sicdata
+
+  - name: Create folder for coefficients
+    file: path="{{ coeffs_dir }}" state=directory
+    tags:
+      - coeffs
+
+  - name: Download PDF coefficients for classifiyng surface types
+    get_url: url=https://www.dropbox.com/s/vkegv24y1ydc63f/coeffs.tar.gz?dl=1 dest="{{ coeffs_dir }}/coeffs.tar.gz"
+    tags:
+      - coeffs
+
+
+  - name: Unarchive PDF coefficients
+    unarchive: src="{{ coeffs_dir }}/coeffs.tar.gz" dest="{{ coeffs_dir }}" copy=no
+    tags:
+      - coeffs
+
+  - name: Create output directory
+    file: path="{{ output_directory }}" state=directory
+    tags:
+      - compute_sic
+
+  - name: Run `compute_sic.py` with test data
+    shell: python compute_sic.py --input-file "{{ local_gac_dir }}/{{ test_year }}/{{ test_date }}/noaa18_20080801_1220_99999_satproj_00000_12119_avhrr.h5" --output-dir="{{ output_directory }}" --coeffs={{ coeffs_file }} --sensor=avhrr_noaa18 -a ./areas.cfg
+    args:
+      chdir: "{{ codespace_dir }}/compute_sic"
+    tags:
+      - compute_sic
+
+
+  - name: Run behaviour tests
+    shell: "{{ venv }}/bin/behave --tags=wip"
+    args:
+      chdir: "{{ base_dir }}/codeshop"
+    tags:
+      - tests
